@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+        #logout {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        #logout:hover {
+            background-color: #d32f2f;
+        }
+        /* Tilføjet styling til knapper og sektioner */
+        .section {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        button {
+            padding: 10px;
+            margin-right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Admin Dashboard</h2>
+
+    <!-- Knapper til at skifte mellem forespørgsler og ønskelister -->
+    <button onclick="location.href='/admin?section=forespørgsler'">Forespørgsler</button>
+    <button onclick="location.href='/admin?section=ønskelister'">Ønskelister</button>
+
+    <!-- Sektion til forespørgsler -->
+    <div id="forespørgsler-section" class="section {% if section == 'forespørgsler' %}active{% endif %}">
+        <h2>Forespørgsler</h2>
+        <input type="text" id="searchInputForespørgsel" onkeyup="searchTable('inquiryTable')" placeholder="Søg efter titler, kunstnere eller andre felter..">
+
+        <table id="inquiryTable">
+            <thead>
+                <tr>
+                    <th><a href="/admin?sort_by=Titel&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Titel' else new_sort_order }}">Titel</a></th>
+                    <th><a href="/admin?sort_by=Kunstner&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Kunstner' else new_sort_order }}">Kunstner</a></th>
+                    <th><a href="/admin?sort_by=Type&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Type' else new_sort_order }}">Type</a></th>
+                    <th><a href="/admin?sort_by=Genre&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Genre' else new_sort_order }}">Genre</a></th>
+                    <th><a href="/admin?sort_by=Udgivelsesaar&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Udgivelsesaar' else new_sort_order }}">Udgivelsesår</a></th>
+                    <th><a href="/admin?sort_by=KundeNavn&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'KundeNavn' else new_sort_order }}">Kunde Navn</a></th>
+                    <th><a href="/admin?sort_by=Email&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Email' else new_sort_order }}">Email</a></th>
+                    <th><a href="/admin?sort_by=Besked&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Besked' else new_sort_order }}">Besked</a></th>
+                    <th><a href="/admin?sort_by=Dato&section=forespørgsler&sort_order={{ 'ASC' if current_sort_by != 'Dato' else new_sort_order }}">Dato</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inquiry in inquiries %}
+                <tr>
+                    <td>{{ inquiry[0] }}</td>
+                    <td>{{ inquiry[1] }}</td>
+                    <td>{{ inquiry[2] }}</td>
+                    <td>{{ inquiry[3] }}</td>
+                    <td>{{ inquiry[4] }}</td>
+                    <td>{{ inquiry[5] }}</td>
+                    <td>{{ inquiry[6] }}</td>
+                    <td>{{ inquiry[7] }}</td>
+                    <td>{{ inquiry[8] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sektion til ønskelister -->
+    <div id="ønskelister-section" class="section {% if section == 'ønskelister' %}active{% endif %}">
+        <h2>Ønskelister</h2>
+        <input type="text" id="searchInputØnskeliste" onkeyup="searchTable('wishlistTable')" placeholder="Søg efter titler, kunstnere eller andre felter..">
+
+        <table id="wishlistTable">
+            <thead>
+                <tr>
+                    <th><a href="/admin?sort_by=Titel&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Titel' else new_sort_order }}">Titel</a></th>
+                    <th><a href="/admin?sort_by=Kunstner&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Kunstner' else new_sort_order }}">Kunstner</a></th>
+                    <th><a href="/admin?sort_by=Type&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Type' else new_sort_order }}">Type</a></th>
+                    <th><a href="/admin?sort_by=Genre&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Genre' else new_sort_order }}">Genre</a></th>
+                    <th><a href="/admin?sort_by=Udgivelsesaar&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Udgivelsesaar' else new_sort_order }}">Udgivelsesår</a></th>
+                    <th><a href="/admin?sort_by=KundeNavn&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'KundeNavn' else new_sort_order }}">Kunde Navn</a></th>
+                    <th><a href="/admin?sort_by=Email&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Email' else new_sort_order }}">Email</a></th>
+                    <th><a href="/admin?sort_by=Besked&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Besked' else new_sort_order }}">Besked</a></th>
+                    <th><a href="/admin?sort_by=Dato&section=ønskelister&sort_order={{ 'ASC' if current_sort_by != 'Dato' else new_sort_order }}">Dato</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wishlist in wishlists %}
+                <tr>
+                    <td>{{ wishlist[0] }}</td>
+                    <td>{{ wishlist[1] }}</td>
+                    <td>{{ wishlist[2] }}</td>
+                    <td>{{ wishlist[3] }}</td>
+                    <td>{{ wishlist[4] }}</td>
+                    <td>{{ wishlist[5] }}</td>
+                    <td>{{ wishlist[6] }}</td>
+                    <td>{{ wishlist[7] }}</td>
+                    <td>{{ wishlist[8] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/logout" id="logout">Log ud</a>
+
+    <script>
+        // Funktion til at skifte mellem sektioner
+        function showSection(sectionId) {
+            document.querySelector('.active').classList.remove('active');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Funktion til at søge i tabellerne
+        function searchTable(tableId) {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById(tableId === 'inquiryTable' ? "searchInputForespørgsel" : "searchInputØnskeliste");
+            filter = input.value.toLowerCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {  // Starter fra 1 for at springe tabeloverskriften over
+                tr[i].style.display = "none";  // Skjul rækken som standard
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {  // Gå igennem hver celle i rækken
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";  // Vis rækken, hvis der er et match
+                            break;  // Stop efter første match i rækken
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

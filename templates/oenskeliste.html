@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ønskeliste Vinyl eller CD</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Generel styling for siden */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        /* Styling af formular og felter */
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        /* Ændring af udseende for readonly-felter */
+        input[readonly] {
+            background-color: #f0f0f0;
+            color: #888;
+            border: 1px solid #ccc;
+        }
+
+        input:not([readonly]), textarea {
+            background-color: #fff;
+            border: 1px solid #888;
+        }
+
+        /* Styling af knap */
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling af autocomplete liste */
+        .autocomplete-item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Tilføj dette CSS for checkbox layout */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Dette justerer alt til venstre */
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px; /* Afstand mellem checkbox og teksten */
+        }
+
+    </style>
+</head>
+<body>
+
+<main>
+    <form id="wishlistForm">
+        <!-- Felter til ønskelisten -->
+        <label for="titel">Titel:</label>
+        <input type="text" id="titel" name="titel" placeholder="Søg efter titel..." autocomplete="off" required>
+        <div id="autocomplete-titel-list"></div>
+
+        <label for="kunstner">Kunstner/Band:</label>
+        <input type="text" id="kunstner" name="kunstner" placeholder="Søg efter kunstner/band..." autocomplete="off"
+               required>
+        <div id="autocomplete-kunstner-list"></div>
+
+        <label for="type">Type (Vinyl/CD):</label>
+        <input type="text" id="type" name="type" readonly>
+
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" readonly>
+
+        <label for="udgivelsesaar">Årstal:</label>
+        <input type="number" id="udgivelsesaar" name="udgivelsesaar" readonly>
+        <div id="added-albums-list">
+            <h3>Tilføjede albums:</h3>
+            <ul id="album-list"></ul>
+            <div id="album-container"></div>
+            <button type="button" id="add-album-btn">Tilføj et album mere</button>
+        </div>
+
+        <!-- Navn og kontaktoplysninger -->
+        <label for="kundeNavn">Dit navn:</label>
+        <input type="text" id="kundeNavn" name="kundeNavn" required>
+
+        <label for="email">Din email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <textarea id="besked" name="besked" placeholder="Besked (valgfrit)"></textarea>
+
+        <div class="checkbox-container">
+            <input type="checkbox" id="consentCheckbox" name="consentCheckbox" required>
+            <label for="consentCheckbox" style="font-size: smaller">
+                Jeg giver hermed samtykke til at Accord gerne må opbevare og benytte mine personoplysninger, med henblik
+                på at kontakte mig angående køb og salg af produkter. Jeg accepterer derudover at have læst Kunde- &
+                Privatlivspolitik på
+                <a href="https://accord.dk/policies/terms-of-service" target="_blank">https://accord.dk/policies/terms-of-service</a>.
+            </label>
+        </div>
+
+        <button type="submit">Send ønskeliste</button>
+    </form>
+</main>
+
+<script>
+    // Funktion for at søge og autoudfylde for titel via Discogs API
+    document.getElementById('titel').addEventListener('input', async function () {
+        const query = this.value;
+        if (query.length < 2) {
+            document.getElementById('autocomplete-titel-list').innerHTML = '';
+            return;
+        }
+        const response = await fetch(`http://127.0.0.1:5000/discogs_search?titel=${query}`);
+        const data = await response.json();
+
+        const results = data.results || [];
+        const autocompleteList = document.getElementById('autocomplete-titel-list');
+        autocompleteList.innerHTML = '';
+
+        results.forEach(result => {
+            const option = document.createElement('div');
+            option.classList.add('autocomplete-item');
+
+            const splitResult = result.title.split(' - ');
+            const artist = splitResult.length === 2 ? splitResult[0].trim() : 'Ukendt';
+            const title = splitResult.length === 2 ? splitResult[1].trim() : result.title;
+
+            const releaseYear = result.year || 'Ukendt';
+            const format = result.format ? result.format.join(', ') : 'Ukendt';
+
+            option.textContent = `${title} (${releaseYear}) [${format}]`;
+
+            option.addEventListener('click', function () {
+                document.getElementById('titel').value = title;
+                document.getElementById('kunstner').value = artist;
+                document.getElementById('type').value = format;
+                document.getElementById('genre').value = result.genre ? result.genre.join(', ') : 'Ukendt';
+                document.getElementById('udgivelsesaar').value = releaseYear;
+                autocompleteList.innerHTML = '';
+            });
+            autocompleteList.appendChild(option);
+        });
+    });
+
+    // Funktion for at søge og autoudfylde for kunstner via Discogs API
+    document.getElementById('kunstner').addEventListener('input', async function () {
+        const query = this.value;
+        if (query.length < 2) {
+            document.getElementById('autocomplete-kunstner-list').innerHTML = '';
+            return;
+        }
+        const response = await fetch(`http://127.0.0.1:5000/discogs_search?kunstner=${query}`);
+        const data = await response.json();
+
+        const results = data.results || [];
+        const autocompleteList = document.getElementById('autocomplete-kunstner-list');
+        autocompleteList.innerHTML = '';
+
+        results.forEach(result => {
+            const option = document.createElement('div');
+            option.classList.add('autocomplete-item');
+
+            const splitResult = result.title.split(' - ');
+            const artist = splitResult.length === 2 ? splitResult[0].trim() : 'Ukendt';
+            const title = splitResult.length === 2 ? splitResult[1].trim() : result.title;
+
+            const releaseYear = result.year || 'Ukendt';
+            const format = result.format ? result.format.join(', ') : 'Ukendt';
+
+            option.textContent = `${artist} - ${title} (${releaseYear}) [${format}]`;
+
+            option.addEventListener('click', function () {
+                document.getElementById('titel').value = title;
+                document.getElementById('kunstner').value = artist;
+                document.getElementById('type').value = format;
+                document.getElementById('genre').value = result.genre ? result.genre.join(', ') : 'Ukendt';
+                document.getElementById('udgivelsesaar').value = releaseYear;
+                autocompleteList.innerHTML = '';
+            });
+            autocompleteList.appendChild(option);
+        });
+    });
+
+    let albums = []; // Array til at gemme tilføjede albums
+
+    document.getElementById('add-album-btn').addEventListener('click', function () {
+        const albumContainer = document.getElementById('album-container');
+        const albumList = document.getElementById('album-list'); // For displaying added albums
+
+        // Hent de nuværende værdier fra felterne
+        const albumData = {
+            titel: document.querySelector('#titel').value,
+            kunstner: document.querySelector('#kunstner').value,
+            type: document.querySelector('#type').value,
+            genre: document.querySelector('#genre').value,
+            udgivelsesaar: document.querySelector('#udgivelsesaar').value
+        };
+
+        // Tjek om alle felter er udfyldt
+        if (!albumData.titel || !albumData.kunstner || !albumData.type || !albumData.genre || !albumData.udgivelsesaar) {
+            alert('Udfyld venligst alle felterne før du tilføjer et nyt album.');
+            return;
+        }
+
+        // Tilføj albummet til listen
+        albums.push(albumData);
+
+        // Tilføj albummet til visningen (album-listen)
+        const li = document.createElement('li');
+        li.textContent = `${albumData.titel} af ${albumData.kunstner}`;
+        albumList.appendChild(li);
+
+        // Ryd felterne
+        document.querySelector('#titel').value = '';
+        document.querySelector('#kunstner').value = '';
+        document.querySelector('#type').value = '';
+        document.querySelector('#genre').value = '';
+        document.querySelector('#udgivelsesaar').value = '';
+
+    });
+
+    // Send ønskelisten
+    document.getElementById('wishlistForm').addEventListener('submit', async function (event) {
+        event.preventDefault();  // Forhindre siden i at reloade
+
+        var consentCheckbox = document.getElementById('consentCheckbox');
+        if (!consentCheckbox.checked) {
+            alert('Du skal give samtykke før du sender ønskelisten.');
+            return; // Prevent form submission
+        }
+
+        // Hent værdierne fra de aktuelle formularfelter (det sidste album)
+        const lastAlbum = {
+            titel: document.querySelector('#titel').value,
+            kunstner: document.querySelector('#kunstner').value,  // Ændret til 'kunstner'
+            type: document.querySelector('#type').value,
+            genre: document.querySelector('#genre').value,
+            udgivelsesaar: document.querySelector('#udgivelsesaar').value
+        };
+
+        // Tjek om albummet i formularfelterne er udfyldt, og tilføj det til albums-arrayet, hvis det er tilfældet
+        if (lastAlbum.titel && lastAlbum.kunstner && lastAlbum.type && lastAlbum.genre && lastAlbum.udgivelsesaar) {
+            albums.push(lastAlbum);
+        }
+
+        // Tjek om der er tilføjet albums til listen (albums-arrayet)
+        if (albums.length === 0) {
+            alert('Tilføj venligst mindst ét album før du sender ønskelisten.');
+            return;
+        }
+
+        // Formularen kræver kun kundeinfo, email og (valgfrit) besked
+        if (!document.getElementById('kundeNavn').value || !document.getElementById('email').value) {
+            alert('Udfyld venligst dine kontaktoplysninger før du sender ønskelisten.');
+            return;
+        }
+
+        // For debugging: log dataen der skal sendes
+        const data = {
+            KundeNavn: document.getElementById('kundeNavn').value,
+            Email: document.getElementById('email').value,
+            Besked: document.getElementById('besked').value,
+            Albums: albums  // Send alle albums inklusive det sidst udfyldte, hvis der er nogen
+        };
+
+        console.log('Data sendt til serveren:', data);  // Debugging-linje
+
+        const response = await fetch('http://127.0.0.1:5000/wishlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert('Ønskeliste sendt!');
+            // Ryd albums-arrayet og albumlisten efter vellykket forespørgsel
+            albums = [];
+            document.getElementById('album-list').innerHTML = '';
+        } else {
+            alert('Der opstod en fejl.');
+        }
+
+        // Ryd også felterne for navn, e-mail og besked
+        document.getElementById('kundeNavn').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('besked').value = '';
+        document.querySelector('#titel').value = '';
+        document.querySelector('#kunstner').value = '';
+        document.querySelector('#type').value = '';
+        document.querySelector('#genre').value = '';
+        document.querySelector('#udgivelsesaar').value = '';
+    });
+</script>
+</body>
+</html>
