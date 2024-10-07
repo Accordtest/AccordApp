@@ -153,6 +153,9 @@
           padding: 1rem;
         } */
         #my-button {
+            position: absolute;
+            right: 45%;
+            bottom: 3%;
             background-color: #ed672c;
             color: white;
             padding: 0.8rem 3rem 0.8rem 3rem;
@@ -170,10 +173,6 @@
             border-width: 2px;
         }
 
-        #container {
-            display: flex;
-
-        }
     </style>
 </head>
 
@@ -254,65 +253,58 @@
         </div>
     </nav>
 
-    <div id="container">
-        <div id="image-div" style="width: 40%">
-            <img src="../static/image.png" alt="My Image" style="width: 30%; position: absolute; top: 20%; left: 6%">
+    <div style="padding: 0 15rem 0 15rem; margin-bottom: 5%">
+        <div>
+            <h1>Hvad køber vi?</h1>
+            <p>
+                Vi køber LP'er, CD'er, 7" singler, kassettebånd og laserdisc, der er
+                i god stand, og som er blevet plejet godt. Som musikentusiaster er
+                vi altid på udkig efter sjældne eller eftertragtede udgivelser, som
+                kan berige vores sortiment. Vi fokuserer meget på bæredygtighed, og
+                vi vil derfor gøre alt for at sikre, at din samling fortsat kan
+                sprede glæde hos andre!
+            </p>
         </div>
-        <div style="padding: 0 15rem 0 15rem; margin-bottom: 10%; width: 60%">
-            <div>
-                <h1>Hvad køber vi?</h1>
-                <p>
-                    Vi køber LP'er, CD'er, 7" singler, kassettebånd og laserdisc, der er
-                    i god stand, og som er blevet plejet godt. Som musikentusiaster er
-                    vi altid på udkig efter sjældne eller eftertragtede udgivelser, som
-                    kan berige vores sortiment. Vi fokuserer meget på bæredygtighed, og
-                    vi vil derfor gøre alt for at sikre, at din samling fortsat kan
-                    sprede glæde hos andre!
-                </p>
-            </div>
-            <div>
-                <h1>Hvor meget får jeg for min samling?</h1>
-                <p>
-                    Vi forstår, at det kan være svært at sætte pris på din samling.
-                    Priserne kan variere enormt meget og spænde fra noget, der kun har
-                    sentimental værdi, til udgivelser der kan være mange tusinder,kroner
-                    værd. Hver samling er unik, og selv den samme plade kan have vidt
-                    forskellige økonomiske værdier afhængigt af tilstand og
-                    efterspørgsel.
-                </p>
-            </div>
-            <div>
-                <h1>Hvad køber vi ikke?</h1>
-                <p>
-                    Vi kan desværre ikke købe plader, der har betydeligt slid og skader.
-                    Men vi ved, at disse plader ofte har en stor sentimental værdi, som
-                    ofte skyldes de fantastiske minder, de bærer med sig!
-                </p>
-            </div>
-            <div>
-                <h1>Vi er her for at hjælpe</h1>
-                <p>
-                    Vi ønsker at gøre salgsprocessen så glat som muligt. Hvis du har
-                    spørgsmål, opfordrer vi dig til at udfylde formularen og dele dine
-                    oplysninger med os.
-                </p>
-            </div>
-            <div style="margin-bottom: 50px">
-                <h1>Klar til at få et tilbud?</h1>
-                <p>
-                    Hvis du føler dig klar til at få et tilbud på din samling, så klik
-                    her for at udfylde vores salgsforespørgselsformular. Det er en
-                    hurtig og nem proces, så vi kan vurdere din samling og give dig et
-                    tilbud, som vi håber, du vil synes om.
-                </p>
-            </div>
-
-            <a id="my-button" href="/old-form">Tryk her</a>
-
+        <div>
+            <h1>Hvor meget får jeg for min samling?</h1>
+            <p>
+                Vi forstår, at det kan være svært at sætte pris på din samling.
+                Priserne kan variere enormt meget og spænde fra noget, der kun har
+                sentimental værdi, til udgivelser der kan være mange tusinder,kroner
+                værd. Hver samling er unik, og selv den samme plade kan have vidt
+                forskellige økonomiske værdier afhængigt af tilstand og
+                efterspørgsel.
+            </p>
         </div>
-
+        <div>
+            <h1>Hvad køber vi ikke?</h1>
+            <p>
+                Vi kan desværre ikke købe plader, der har betydeligt slid og skader.
+                Men vi ved, at disse plader ofte har en stor sentimental værdi, som
+                ofte skyldes de fantastiske minder, de bærer med sig!
+            </p>
+        </div>
+        <div>
+            <h1>Vi er her for at hjælpe</h1>
+            <p>
+                Vi ønsker at gøre salgsprocessen så glat som muligt. Hvis du har
+                spørgsmål, opfordrer vi dig til at udfylde formularen og dele dine
+                oplysninger med os.
+            </p>
+        </div>
+        <div>
+            <h1>Klar til at få et tilbud?</h1>
+            <p>
+                Hvis du føler dig klar til at få et tilbud på din samling, så klik
+                her for at udfylde vores salgsforespørgselsformular. Det er en
+                hurtig og nem proces, så vi kan vurdere din samling og give dig et
+                tilbud, som vi håber, du vil synes om.
+            </p>
+        </div>
     </div>
 
+
+    <a id="my-button" href="/old-form">Tryk her</a>
 </div>
 
 <script>
