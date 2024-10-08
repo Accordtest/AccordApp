@@ -45,7 +45,8 @@ login.html
 admin_dashboard.html
 
 
-Support
+Support:
+
 Hvis du har spørgsmål eller oplever problemer med at bruge prototypen, kan du kontakte udviklingsteamet på mail:
 jofr0002@stud.kea.dk, oshe0001@stud.kea.dk, anco0003@stud.kea.dk eller estu0002@stud.kea.dk. 
 Men helt ærligt, kan du ærligt sige at du har læst al koden samt denne readme fil? Send en mail hvis du har :) 
