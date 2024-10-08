@@ -46,5 +46,5 @@ admin_dashboard.html
 
 
 Support
-Hvis du har spørgsmål eller oplever problemer med at bruge prototypen, kan du kontakte udviklingsteamet på jofr0002@stud.kea.dk
+Hvis du har spørgsmål eller oplever problemer med at bruge prototypen, kan du kontakte udviklingsteamet på jofr0002@stud.kea.dk eller gruppe8@stud.kea.dk. Men helt ærligt, kan du ærligt sige at du har læst al koden samt denne readme fil? Send en mail hvis du har :) 
 
