@@ -197,7 +197,7 @@
                 return;
             }
             const response = await fetch(
-                `http://127.0.0.1:5000/discogs_search?titel=${query}`
+                `https://accordapp.onrender.com/discogs_search?titel=${query}`
             );
             const data = await response.json();
 
@@ -250,7 +250,7 @@
                 return;
             }
             const response = await fetch(
-                `http://127.0.0.1:5000/discogs_search?kunstner=${query}`
+                `https://accordapp.onrender.com/discogs_search?kunstner=${query}`
             );
             const data = await response.json();
 
@@ -404,7 +404,7 @@
                 Albums: albums, // Send alle albums inklusive det sidst udfyldte, hvis der er nogen
             };
 
-            const response = await fetch("http://127.0.0.1:5000/forespoergsel", {
+            const response = await fetch("https://accordapp.onrender.com/forespoergsel", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

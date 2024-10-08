@@ -3,17 +3,27 @@ from flask_cors import CORS
 import mysql.connector
 from requests_oauthlib import OAuth1Session
 
+import psycopg2
+
 # app = Flask(__name__, template_folder='C:/Users/TRM/OneDrive - Københavns Erhvervsakademi/Skrivebord/accord_frontend/templates')
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Nødvendig for session-håndtering
 CORS(app) # Aktivér CORS for hele applikationen
 
 # Opret forbindelse til MySQL-databasen
-db = mysql.connector.connect(
-    host="sql7.freemysqlhosting.net",
-    user="sql7736049",
-    password="R7DeYpK2SE",
-    database="sql7736049"
+# db = mysql.connector.connect(
+#     host="sql7.freemysqlhosting.net",
+#     user="sql7736049",
+#     password="R7DeYpK2SE",
+#     database="sql7736049"
+# )
+
+# Opret forbindelse til PostgreSQL-databasen
+db = psycopg2.connect(
+    host="aws-0-eu-north-1.pooler.supabase.com",
+    user="postgres.skmiwdszvamupuvpluvm",
+    password="Accordapp123!",
+    dbname="postgres"
 )
 
 cursor = db.cursor()

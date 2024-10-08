@@ -176,7 +176,7 @@
             document.getElementById('autocomplete-titel-list').innerHTML = '';
             return;
         }
-        const response = await fetch(`http://127.0.0.1:5000/discogs_search?titel=${query}`);
+        const response = await fetch(`https://accordapp.onrender.com/discogs_search?titel=${query}`);
         const data = await response.json();
 
         const results = data.results || [];
@@ -215,7 +215,7 @@
             document.getElementById('autocomplete-kunstner-list').innerHTML = '';
             return;
         }
-        const response = await fetch(`http://127.0.0.1:5000/discogs_search?kunstner=${query}`);
+        const response = await fetch(`https://accordapp.onrender.com/discogs_search?kunstner=${query}`);
         const data = await response.json();
 
         const results = data.results || [];
@@ -331,7 +331,7 @@
 
         console.log('Data sendt til serveren:', data);  // Debugging-linje
 
-        const response = await fetch('http://127.0.0.1:5000/wishlist', {
+        const response = await fetch('https://accordapp.onrender.com/wishlist', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
