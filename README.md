@@ -27,6 +27,11 @@ Vedlagt i github findes backend filerne: app.py Accord Script final.sql
 
 og frontend filerne: index.html forespoergsel.html oldform.html wishlist.html login.html admin_dashboard.html
 
+Kommende opdateringer: 
+Grundet tidspres er der i rapporten indsat 20 timer til udviklingsholdet, til at færdiggøre prototypen til Accord. I de 20 timer inkluderes fælgende opdateringer:
+- Forbedret design af nuværende forside, så den indeholder fængende billeder, samt samme design som den nye Sælg & Byt side.
+- En navigationsbar på samtlige sider som er designet på samme måde som den nye sælg & byt side, dog hvor funktionaliteten virker. Dette gæres for at brugerne af hjemmesiden, lettere kan navigere rundt på siden, ligegyldigt hvor på siden de er.
+
 Support:
 
 Hvis du har spørgsmål eller oplever problemer med at bruge prototypen, kan du kontakte udviklingsteamet på mail: jofr0002@stud.kea.dk, oshe0001@stud.kea.dk, anco0003@stud.kea.dk, nape0003@stud.kea.dk eller estu0002@stud.kea.dk. Men helt ærligt, kan du ærligt sige at du har læst al koden samt denne readme fil? Send en mail hvis du har :)
